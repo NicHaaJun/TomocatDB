@@ -37,7 +37,7 @@ You can check the database tables using a software like DBeaver.
 ## Interfacing with your database
 
 You can easily access your database using pandas. Simply provide the connection string
-to your database, followed by an sql statement.
+to your database followed by an sql statement.
 
 ```
 import pandas as pd
