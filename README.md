@@ -1,7 +1,6 @@
 # TomocatDB
 
-This is a pre-made SQLAlchemy/PostgreSQL data model wrapped in a python package. The toold is used within the TomoCAT project at the University of Oslo. 
-The data model for storing simple scientific data in a postgres database. The ORM datamodel implemented with SQLAlchemy provides an easy way of adding database support to other python applications. An example of this is the "BET-Analysis" appliction.
+This is a pre-made SQLAlchemy/PostgreSQL data model wrapped in a python package. The toold is used within the TomoCAT project at the University of Oslo to store scientific data in a personal Postgres database. The TomocatDB is an ORM data model implemented with SQLAlchemy which provides an easy way of adding database support to other python applications. An example of this is the "BET-Analysis" appliction.
 
 Tomocatdb requires a local Postgres database (this is most easily created and administered with PgAdmin4) as well as configuration of Alembic.
 
@@ -18,7 +17,7 @@ $pip install .
 
 ## Setting up your database.
 
-You should now be able to generate the database tables detailed by your data model with alembic.
+You should now be able to generate the database tables detailed by your data model in models.py with alembic.
 
 ```
 $alembic revision --autogenerate -m 'my first commit'
