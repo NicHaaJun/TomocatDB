@@ -29,7 +29,7 @@ $alembic revision --autogenerate -m 'my first commit'
 $alembic upgrade head
 ```
 
-You can check the database tables using a software like DBeaver.
+You can check the database tables using a software like [DBeaver](https://dbeaver.io/).
 
 ![image](https://user-images.githubusercontent.com/70808555/130825089-6345a73e-07a6-43d8-833d-02596be9b58b.png)
 
@@ -46,6 +46,7 @@ conn_string = postgresql+psycopg2://username:password@localhost:5432/database
 sql_stmt = "SELECT * FROM gas_adsorption_analysis gas WHERE gas.zeolite_id='tomo004'"
 
 df = pd.read_sql(conn_string, sql_stmt)
+df
 ```
 ![image](https://user-images.githubusercontent.com/70808555/130827930-080926d3-24a9-4277-884d-166016135f6a.png)
 
