@@ -47,5 +47,5 @@ sql_stmt = "SELECT * FROM gas_adsorption_analysis gas WHERE gas.zeolite_id='tomo
 
 df = pd.read_sql(conn_string, sql_stmt)
 ```
-
+![image](https://user-images.githubusercontent.com/70808555/130827930-080926d3-24a9-4277-884d-166016135f6a.png)
 
