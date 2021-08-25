@@ -25,3 +25,6 @@ $alembic upgrade head
 ```
 
 You can check the database tables using a software like DBeaver.
+
+![image](https://user-images.githubusercontent.com/70808555/130825089-6345a73e-07a6-43d8-833d-02596be9b58b.png)
+
