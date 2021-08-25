@@ -1,0 +1,5 @@
+tomocatdb/__pycache__
+tomocatdb/alembic/__pycache__
+tomocatdb/alembic/versions/*
+
+!tomocatdb/alembic/versions/.gitkeep
