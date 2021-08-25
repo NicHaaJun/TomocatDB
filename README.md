@@ -17,7 +17,7 @@ $pip install .
 
 ## Setting up your database.
 
-You should now be able to generate the database tables detailed by your data model in models.py with alembic.
+You should now be able to generate the database tables as per your ORM data model in models.py with alembic.
 
 ```
 $alembic revision --autogenerate -m 'my first commit'
