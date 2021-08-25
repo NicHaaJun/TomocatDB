@@ -34,6 +34,18 @@ You can check the database tables using a software like DBeaver.
 ![image](https://user-images.githubusercontent.com/70808555/130825089-6345a73e-07a6-43d8-833d-02596be9b58b.png)
 
 ## Usage
-## Interfacing with your database via TomocatDB
+## Interfacing with your database
+
+You can easily access your database using pandas. Simply provide the connection string
+to your database, followed by an sql statement.
+
+```
+import pandas as pd
+
+conn_string = postgresql+psycopg2://username:password@localhost:5432/database
+sql_stmt = "SELECT * FROM gas_adsorption_analysis gas WHERE gas.zeolite_id='tomo004'"
+
+df = pd.read_sql(conn_string, sql_stmt)
+```
 
 
