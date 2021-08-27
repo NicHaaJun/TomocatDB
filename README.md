@@ -57,7 +57,7 @@ to your database followed by an sql statement.
 ```
 import pandas as pd
 
-conn_string = postgresql+psycopg2://username:password@localhost:5432/database
+conn_string = 'postgresql+psycopg2://username:password@localhost:5432/database'
 sql_stmt = "SELECT * FROM gas_adsorption_analysis gas WHERE gas.zeolite_id='tomo004'"
 
 df = pd.read_sql(conn_string, sql_stmt)
