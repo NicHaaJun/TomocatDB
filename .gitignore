@@ -1,4 +1,8 @@
+tomocatdb.egg-info/
+
 tomocatdb/__pycache__
+
+# Alembic related files not needed
 tomocatdb/alembic/__pycache__
 tomocatdb/alembic/versions/*
 
