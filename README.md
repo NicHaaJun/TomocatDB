@@ -43,7 +43,7 @@ $alembic revision --autogenerate -m 'my first commit'
 $alembic upgrade head
 ```
 
-You can check the database tables using a software like [DBeaver](https://dbeaver.io/). Note the alembic_version
+You can check the database tables using a software like [DBeaver](https://dbeaver.io/). Note the _alembic_version_
 table containing the identifier string refering to the current alembic version.
 
 ![image](https://user-images.githubusercontent.com/70808555/130825089-6345a73e-07a6-43d8-833d-02596be9b58b.png)
