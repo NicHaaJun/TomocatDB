@@ -27,11 +27,17 @@ fit_param_kw = 'fitparams.txt'  #  Here we can set the fit parameter file keywor
 xrd_kw = 'avg.xy'  #  Here we can set the xrd .xy file keyword
 xrd_ref_kw = 'calc.xy'  #  Here we can set the ref xrd .xy file keyword
 
-def xrd_to_db(engine, xrd_file, xrd_json, xrd_calc_json, parsed_ref, params):
+def xrd_to_db(engine, xrd_file, xrd_json, xrd_calc_json, parsed_ref, params=None):
     """
     Function that pushes xrd_exsitu data to database
     """
-    dry_and_sealed, drying_temp = params
+
+    if params:
+        dry_and_sealed, drying_temp = params
+    else:
+        dry_and_sealed = None
+        drying_temp = None
+
     folder, file = xrd_file.split('\\')  # Getting the folder name where the data files are stored
 
     material_name, reactor_sample, rs_layer_code, descr = get_file_metadata(file)  #  Getting the metadata stored in the xrd file name
@@ -67,9 +73,9 @@ def xrd_to_db(engine, xrd_file, xrd_json, xrd_calc_json, parsed_ref, params):
             xrd_anal.extrudate_id = ext.internal_id
         else:
             raise AssertionError ("No parent entry (zeolite, extrudate, or reactor sample) found in database!")
-        #print(xrd_anal)
-        session.add(xrd_anal)  # Added xrd object to session
-        session.commit()  # Committing to DB
+        print(xrd_anal)
+        #session.add(xrd_anal)  # Added xrd object to session
+        #session.commit()  # Committing to DB
 
     return
 
@@ -123,16 +129,13 @@ def get_file_metadata(file):
     return material, reactor_sample, reactor_layer_code, descr
 
 
-def main():
+def XRD(folder_path=None, dry_and_sealed=None, drying_temp=None):
     """
     Main program.
     """
 
-    if sys.argv[1] == '.': # Option to process multiple folders
-        folders = os.listdir(sys.argv[1])  # List of folders
-    else:  # Option to process a single folder
-        folders = [sys.argv[1]]
-
+    folders = os.listdir(folder_path)  # List of folders
+    
     #  Main program loop
     for folder in folders:
         all_files = os.listdir(folder)
@@ -141,7 +144,7 @@ def main():
             if fit_param_kw in file:
                 ref_file = os.path.join(folder, file)
                 ref_df = pd.read_csv(ref_file, skiprows=1, sep='\t', encoding = 'unicode_escape', engine ='python')  # Reading file into a dataframe
-                ref_json = ref_df.to_json(orient="records")  # Converting df to json.¨
+                ref_json = ref_df.to_json(orient="records")  # Converting df to json.
                 parsed_ref = json.loads(ref_json)[0]
                 
             elif xrd_kw in file:  #  Searching for the xrd exp .xy file
@@ -151,14 +154,10 @@ def main():
             elif xrd_ref_kw in file:  #  Searching for the ref xrd .xy file
                 xrd_calc_json = read_xrd_calc(os.path.join(folder, file))
 
-
-        dry_and_sealed = sys.argv[2]
-        drying_temp = int(sys.argv[3])
-
         params = [dry_and_sealed, drying_temp]
 
         xrd_to_db(engine, xrd_file, xrd_json, xrd_calc_json, parsed_ref, params)
 
 if __name__ == '__main__':
-    main()
+    XRD()
 

@@ -16,19 +16,25 @@ from sqlalchemy.orm import Session
 import os
 import pandas as pd
 import sys
-from datetime import datetime
 import json
 
 conn_string = 'postgresql+psycopg2://nicolai:tomocat@localhost/tomocat'  #  Database connection string
 engine = sq.create_engine(conn_string)  #  Creating SQLAlchemy Engine
 
 def read_tg_dat(file):
+    """Functions which reads the TGA data file.
+
+    Args:
+        file ([type]): [description]
+
+    Returns:
+        [type]: [description]
+    """
 
     ### READING METADATA
     file_metadata = {}
 
     with open(file, 'r') as f:
-        
         i = 0
         for row in f:
             if not row == '\n':
@@ -98,7 +104,14 @@ def read_tg_dat(file):
     return json_metadata, json_meas_parsed
 
 def read_tg_res(file):
-    """"""
+    """Function which reads the TGA results file.
+
+    Args:
+        file ([type]): [description]
+
+    Returns:
+        [type]: [description]
+    """
 
     with open(file, 'r') as f:
 
@@ -154,6 +167,17 @@ def read_tg_res(file):
         return res_json
 
 def tg_to_db(folder, json_res, json_meta, json_meas):
+    """Function which pushes data to the database.
+
+    Args:
+        folder ([type]): [description]
+        json_res ([type]): [description]
+        json_meta ([type]): [description]
+        json_meas ([type]): [description]
+
+    Raises:
+        AssertionError: [description]
+    """
 
     material_name = folder.split('_')[0]
     rs_layer_code = folder
@@ -189,13 +213,21 @@ def tg_to_db(folder, json_res, json_meta, json_meas):
             raise AssertionError ("No parent entry (zeolite, extrudate, or reactor sample) found in database!")
         print(tg_anal)
 
-        session.add(tg_anal)  # Added xrd object to session
-        session.commit()  # Committing to DB
-
+        #session.add(tg_anal)  # Added xrd object to session
+        #session.commit()  # Committing to DB
 
     return
 
 def calc_coke_content(metadata, results):
+    """Functions which calculates coke content.
+
+    Args:
+        metadata ([type]): [description]
+        results ([type]): [description]
+
+    Returns:
+        [type]: [description]
+    """
 
     sample_mass = metadata['sample mass']
     water_content = results['Mass_H2O']['Result']
@@ -210,32 +242,27 @@ def calc_coke_content(metadata, results):
     
     return results
 
-def main():
+def TG(folder_path=None, coke=None):
+    """Main TG function used to combine the above functions.
+    """
 
-
-
-
-
-    if sys.argv[1] == '.':
-        folders = os.listdir(sys.argv[1])
+    path_items = os.listdir(folder_path)  #  Checking if we have a folder with several measurment folder.
+    if os.path.isfile(path_items):
+        folders = [folder_path]
     else:
-        folders = [sys.argv[1]]
+        folders = path_items
 
     for folder in folders:
         files = os.listdir(folder)
         files_dat = [f for f in files if 'ExpDat' in f]
         files_res = [f for f in files if 'ExpRes' in f]
 
-        tg_metadata, tg_meas = read_tg_dat(os.path.join(folder, files_dat[0]))
-        json_res = read_tg_res(os.path.join(folder, files_res[0]))
+        tg_metadata, tg_meas = read_tg_dat(os.path.join(folder_path, folder, files_dat[0]))
+        json_res = read_tg_res(os.path.join(folder_path, folder, files_res[0]))
 
-        if len(sys.argv) == 3:
-            if sys.argv[2].lower() == 'coke':
-                json_res = calc_coke_content(tg_metadata, json_res)  #  Adds coke content to json_result
+        if coke:
+            json_res = calc_coke_content(tg_metadata, json_res)  #  Adds coke content to json_result
 
         tg_to_db(folder, json_res, tg_metadata, tg_meas)
+
     return
-
-
-if __name__ == '__main__':
-    main()

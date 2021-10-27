@@ -8,3 +8,6 @@ tomocatdb/alembic/versions/*
 
 # Necessary git file
 !tomocatdb/alembic/versions/.gitkeep
+
+# bin files
+bin/__pycache__
